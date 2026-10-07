@@ -24,7 +24,6 @@ HW-613	DC-DC buck converter
 3D Printed Body	Custom MOMO enclosure
 
 
-Note: The HW-613 is a DC-DC buck converter. It is not a touch sensor and should not be connected directly to a 3.7V LiPo as a power converter because its input requires a higher voltage.
 
 🔌 OLED Wiring
 OLED	Wemos D1 Mini
