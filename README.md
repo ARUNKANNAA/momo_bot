@@ -1,4 +1,4 @@
-🤖 MOMO — Desktop AI Robot
+🤖 MOMO — Desktop Robot
 MOMO is a compact Wi-Fi-enabled desktop companion robot built around the Wemos D1 Mini (ESP8266) and a 0.96" OLED display. It provides an interactive animated face, time/date information, setup through a Wi-Fi access point, and a simple desktop-robot experience.
 ✨ Features
 - 🤖 Animated robot face on 0.96" OLED
