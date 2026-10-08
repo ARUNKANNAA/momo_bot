@@ -919,7 +919,7 @@ footer {
     <a class="btn btn-primary" href="#viewer3d">🧊 3D Model (.STL)</a>
     <a class="btn" href="#wiring">⚡ Wiring Diagram</a>
     <a class="btn" href="#code">📄 momo_bot.ino Code</a>
-    <a class="btn" href="momo_bot_final.stl" download="momo_bot final.STL">⬇️ Download .STL</a>
+    <a class="btn" href="momo_bot final.STL" download="momo_bot final.STL">⬇️ Download .STL</a>
   </div>
 </header>
 
@@ -950,12 +950,12 @@ footer {
       <p class="card-desc">Inspect Momo's 3D printable shell parsed directly from <code>momo_bot final.STL</code>. Drag to rotate 360°, scroll to zoom.</p>
     </div>
     <div style="display:flex; gap:8px">
-      <a class="btn btn-primary" href="momo_bot_final.stl" download="momo_bot final.STL">⬇️ Download .STL</a>
+      <a class="btn btn-primary" href="momo_bot final.STL" download="momo_bot final.STL">⬇️ Download .STL</a>
       <a class="btn" href="https://github.com/ARUNKANNAA/momo_bot/blob/main/momo_bot%20final.STL" target="_blank" rel="noopener">GitHub STL</a>
     </div>
   </div>
 
-  <div class="viewer-3d-box">
+  <div class="viewer-3d-box" id="dropZone3d">
     <canvas id="threeCanvas"></canvas>
     
     <div class="viewer-controls">
@@ -963,6 +963,10 @@ footer {
         <button class="viewer-btn active" id="btnResetView" onclick="reset3DView()">Center</button>
         <button class="viewer-btn" id="btnAutoRotate" onclick="toggleAutoRotate()">Auto Rotate</button>
         <button class="viewer-btn" id="btnWireframe" onclick="toggleWireframe()">Wireframe</button>
+        <label class="viewer-btn" style="cursor:pointer; margin:0" title="Load custom STL from computer">
+          Upload STL
+          <input type="file" id="stlFileInput" accept=".stl,.STL" style="display:none" onchange="loadUserSTL(this)">
+        </label>
       </div>
 
       <!-- FILAMENT COLOR SELECTOR: ONLY RED, WHITE, BLACK, AND DARK BLUE AS REQUESTED -->
@@ -1245,7 +1249,7 @@ footer {
   <h2>12. Code and 3D files</h2>
   <ul>
     <li><a href="momo_bot.ino" download><strong>momo_bot.ino</strong></a>: Complete Arduino sketch for Wemos D1 mini.</li>
-    <li><a href="momo_bot_final.stl" download="momo_bot final.STL"><strong>momo_bot final.STL</strong></a>: 3D CAD printable model for robot enclosure.</li>
+    <li><a href="momo_bot final.STL" download="momo_bot final.STL"><strong>momo_bot final.STL</strong></a>: 3D CAD printable model for robot enclosure.</li>
     <li><a href="setup.html" target="_blank"><strong>setup.html</strong></a>: The exact Wi-Fi setup web page from the Arduino code.</li>
     <li><a href="https://github.com/ARUNKANNAA/momo_bot" target="_blank" rel="noopener"><strong>GitHub Repository: ARUNKANNAA/momo_bot</strong></a>.</li>
   </ul>
@@ -1546,23 +1550,27 @@ function init3DViewer() {
 
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(40, box.clientWidth / box.clientHeight, 0.1, 1000);
-  camera.position.set(0, -65, 55);
+  camera.position.set(24, 18, 62);
 
   renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
   renderer.setSize(box.clientWidth, box.clientHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Lighting
-  var ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+  // Balanced 3-Point Lighting
+  var ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
   scene.add(ambientLight);
 
-  var dirLight1 = new THREE.DirectionalLight(0xffffff, 0.85);
-  dirLight1.position.set(40, 50, 60);
+  var dirLight1 = new THREE.DirectionalLight(0xffffff, 0.9);
+  dirLight1.position.set(40, 50, 50);
   scene.add(dirLight1);
 
   var dirLight2 = new THREE.DirectionalLight(0x7ea2ff, 0.45);
-  dirLight2.position.set(-40, -30, -30);
+  dirLight2.position.set(-40, 30, -30);
   scene.add(dirLight2);
+
+  var dirLight3 = new THREE.DirectionalLight(0xffffff, 0.35);
+  dirLight3.position.set(0, -40, 40);
+  scene.add(dirLight3);
 
   // Controls
   if (typeof THREE.OrbitControls !== 'undefined') {
@@ -1571,36 +1579,91 @@ function init3DViewer() {
     controls.dampingFactor = 0.08;
     controls.maxDistance = 180;
     controls.minDistance = 20;
+    controls.target.set(0, 0, 0);
   }
 
-  // Load Binary STL
+  // Geometry applicator
+  window.applyGeometry = function(geometry) {
+    geometry.center();
+    geometry.computeVertexNormals();
+
+    var material = new THREE.MeshStandardMaterial({
+      color: currentHex,
+      roughness: 0.32,
+      metalness: 0.12,
+      side: THREE.DoubleSide
+    });
+
+    if (stlMesh) scene.remove(stlMesh);
+    stlMesh = new THREE.Mesh(geometry, material);
+    stlMesh.rotation.set(0, -0.32, 0);
+    scene.add(stlMesh);
+    reset3DView();
+  };
+
+  // Load Binary STL (tries momo_bot final.STL, then momo_bot_final.stl, then fallback)
   if (typeof THREE.STLLoader !== 'undefined') {
     var loader = new THREE.STLLoader();
-    loader.load('momo_bot_final.stl', function (geometry) {
-      geometry.center();
-      geometry.computeVertexNormals();
-
-      var material = new THREE.MeshStandardMaterial({
-        color: currentHex,
-        roughness: 0.35,
-        metalness: 0.1,
-        side: THREE.DoubleSide
+    loader.load('momo_bot final.STL', function (geo) {
+      applyGeometry(geo);
+    }, undefined, function (err1) {
+      console.warn('Could not load momo_bot final.STL, trying momo_bot_final.stl:', err1);
+      loader.load('momo_bot_final.stl', function (geo) {
+        applyGeometry(geo);
+      }, undefined, function (err2) {
+        console.warn('Could not load momo_bot_final.stl, trying fallback OBJ/JSON:', err2);
+        loadFallbackJSON();
       });
-
-      stlMesh = new THREE.Mesh(geometry, material);
-      stlMesh.rotation.x = -Math.PI / 2;
-      scene.add(stlMesh);
-      reset3DView();
-    }, undefined, function (error) {
-      console.warn('Could not load momo_bot_final.stl, loading fallback geometry:', error);
-      loadFallbackJSON();
     });
   } else {
     loadFallbackJSON();
   }
 
+  // Drag and drop custom STL onto 3D viewer
+  var dropBox = document.getElementById('dropZone3d');
+  if (dropBox) {
+    ['dragenter', 'dragover'].forEach(function(evt) {
+      dropBox.addEventListener(evt, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropBox.style.outline = '2px dashed var(--accent)';
+      });
+    });
+    ['dragleave', 'drop'].forEach(function(evt) {
+      dropBox.addEventListener(evt, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropBox.style.outline = 'none';
+      });
+    });
+    dropBox.addEventListener('drop', function(e) {
+      var dt = e.dataTransfer;
+      if (dt && dt.files && dt.files[0]) {
+        loadUserSTL({ files: dt.files });
+      }
+    });
+  }
+
   window.addEventListener('resize', onWindowResize);
   animate();
+}
+
+function loadUserSTL(input) {
+  if (!input.files || !input.files[0] || typeof THREE.STLLoader === 'undefined') return;
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var loader = new THREE.STLLoader();
+      var geo = loader.parse(e.target.result);
+      if (window.applyGeometry) {
+        window.applyGeometry(geo);
+      }
+    } catch(err) {
+      alert('Error parsing STL: ' + err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
 }
 
 function loadFallbackJSON() {
@@ -1609,18 +1672,18 @@ function loadFallbackJSON() {
     .then(function(data) {
       var group = new THREE.Group();
       var mat = new THREE.MeshStandardMaterial({ color: currentHex, roughness: 0.35, side: THREE.DoubleSide });
-      ['obj_1', 'obj_4'].forEach(function(k) {
+      ['obj_1', 'obj_2', 'obj_4'].forEach(function(k) {
         if (data[k]) {
           var geo = new THREE.BufferGeometry();
           geo.setAttribute('position', new THREE.Float32BufferAttribute(data[k].vertices, 3));
           geo.setIndex(data[k].indices);
           geo.computeVertexNormals();
           var m = new THREE.Mesh(geo, mat);
-          m.rotation.x = -Math.PI / 2;
           group.add(m);
         }
       });
       stlMesh = group;
+      stlMesh.rotation.set(0, -0.32, 0);
       scene.add(stlMesh);
       reset3DView();
     });
@@ -1637,8 +1700,8 @@ function onWindowResize() {
 function animate() {
   requestAnimationFrame(animate);
   if (controls) controls.update();
-  if (isAutoRotate && scene) {
-    scene.rotation.z += 0.008;
+  if (isAutoRotate && stlMesh) {
+    stlMesh.rotation.y += 0.008;
   }
   if (renderer && scene && camera) {
     renderer.render(scene, camera);
@@ -1647,13 +1710,15 @@ function animate() {
 
 function reset3DView() {
   if (!camera) return;
-  camera.position.set(0, -65, 55);
+  camera.position.set(24, 18, 62);
   camera.lookAt(0, 0, 0);
   if (controls) {
     controls.target.set(0, 0, 0);
     controls.update();
   }
-  if (scene) scene.rotation.set(0, 0, 0);
+  if (stlMesh) {
+    stlMesh.rotation.set(0, -0.32, 0);
+  }
 }
 
 function toggleAutoRotate() {

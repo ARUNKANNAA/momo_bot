@@ -9,8 +9,7 @@ find_img.py
 search_img.py
 update_setup.py
 original_manual.html
-momo_bot_final.3mf
-momo_bot_final.stl
 momo_obj_2.obj
 __pycache__/
 *.pyc
+push_to_github.bat
