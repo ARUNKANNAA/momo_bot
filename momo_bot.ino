@@ -674,7 +674,7 @@ input:focus {
 
   </div>
 
-  <div class="footer">Momo - ESP32-C3</div>
+  <div class="footer">Momo - ESP8266</div>
 
 </div>
 

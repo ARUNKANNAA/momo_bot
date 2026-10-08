@@ -918,7 +918,7 @@ footer {
     <a class="btn btn-primary" href="#viewer3d">🧊 3D Model (.STL)</a>
     <a class="btn" href="#wiring">⚡ Wiring Diagram</a>
     <a class="btn" href="#code">📄 momo_bot.ino Code</a>
-    <a class="btn" href="momo_bot final.STL" download="momo_bot final.STL">⬇️ Download .STL</a>
+    <a class="btn" href="momo_bot_final.stl" download="momo_bot_final.stl">⬇️ Download .STL</a>
   </div>
 </header>
 
@@ -946,11 +946,11 @@ footer {
   <div class="card-header">
     <div>
       <h2 class="card-title">Interactive 3D Robot Enclosure (STL Model)</h2>
-      <p class="card-desc">Inspect Momo's 3D printable shell parsed directly from <code>momo_bot final.STL</code>. Drag to rotate 360°, scroll to zoom.</p>
+      <p class="card-desc">Inspect Momo's 3D printable shell parsed directly from <code>momo_bot_final.stl</code>. Drag to rotate 360°, scroll to zoom.</p>
     </div>
     <div style="display:flex; gap:8px">
-      <a class="btn btn-primary" href="momo_bot final.STL" download="momo_bot final.STL">⬇️ Download .STL</a>
-      <a class="btn" href="https://github.com/ARUNKANNAA/momo_bot/blob/main/momo_bot%20final.STL" target="_blank" rel="noopener">GitHub STL</a>
+      <a class="btn btn-primary" href="momo_bot_final.stl" download="momo_bot_final.stl">⬇️ Download .STL</a>
+      <a class="btn" href="https://github.com/ARUNKANNAA/momo_bot/blob/main/momo_bot_final.stl" target="_blank" rel="noopener">GitHub STL</a>
     </div>
   </div>
 
@@ -1244,7 +1244,7 @@ footer {
   <h2>12. Code and 3D files</h2>
   <ul>
     <li><a href="momo_bot.ino" download><strong>momo_bot.ino</strong></a>: Complete Arduino sketch for Wemos D1 mini.</li>
-    <li><a href="momo_bot final.STL" download="momo_bot final.STL"><strong>momo_bot final.STL</strong></a>: 3D CAD printable model for robot enclosure.</li>
+    <li><a href="momo_bot_final.stl" download="momo_bot_final.stl"><strong>momo_bot_final.stl</strong></a>: 3D CAD printable model for robot enclosure.</li>
     <li><a href="setup.html" target="_blank"><strong>setup.html</strong></a>: The exact Wi-Fi setup web page from the Arduino code.</li>
     <li><a href="https://github.com/ARUNKANNAA/momo_bot" target="_blank" rel="noopener"><strong>GitHub Repository: ARUNKANNAA/momo_bot</strong></a>.</li>
   </ul>
@@ -1596,17 +1596,17 @@ function init3DViewer() {
     reset3DView();
   };
 
-  // Load Binary STL (tries momo_bot final.STL, then momo_bot_final.stl, then fallback)
+  // Load Binary STL (tries momo_bot_final.stl, then momo_bot%20final.STL, then fallback)
   if (typeof THREE.STLLoader !== 'undefined') {
     var loader = new THREE.STLLoader();
-    loader.load('momo_bot final.STL', function (geo) {
+    loader.load('momo_bot_final.stl', function (geo) {
       applyGeometry(geo);
     }, undefined, function (err1) {
-      console.warn('Could not load momo_bot final.STL, trying momo_bot_final.stl:', err1);
-      loader.load('momo_bot_final.stl', function (geo) {
+      console.warn('Could not load momo_bot_final.stl, trying momo_bot%20final.STL:', err1);
+      loader.load('momo_bot%20final.STL', function (geo) {
         applyGeometry(geo);
       }, undefined, function (err2) {
-        console.warn('Could not load momo_bot_final.stl, trying fallback OBJ/JSON:', err2);
+        console.warn('Could not load momo_bot%20final.STL, trying fallback OBJ/JSON:', err2);
         loadFallbackJSON();
       });
     });
