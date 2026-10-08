@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Momo - Desktop Robot User Manual & 3D Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --ink: #12151c;
+  --muted: #5b6270;
+  --line: #dde1e8;
+  --accent: #2459d6;
+  --accent-hover: #1a44a8;
+  --accent-bg: #e8eefc;
+  --warn: #8a4b08;
+  --warn-bg: #fdf0dc;
+  --success: #166534;
+  --success-bg: #dcfce7;
+  --screen: #000000;
+  --eye: #f2f5f9;
+  --oled-blue: #00d2ff;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1016; --card: #151a22; --ink: #e8ebf0; --muted: #98a1b0; --line: #262d39;
+    --accent: #7ea2ff; --accent-hover: #a0bcff; --accent-bg: #1b2744; --warn: #f2c27a; --warn-bg: #2d2314;
+    --success: #4ade80; --success-bg: #143820; --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0d1016; --card: #151a22; --ink: #e8ebf0; --muted: #98a1b0; --line: #262d39;
+  --accent: #7ea2ff; --accent-hover: #a0bcff; --accent-bg: #1b2744; --warn: #f2c27a; --warn-bg: #2d2314;
+  --success: #4ade80; --success-bg: #143820; --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="light"] {
+  --bg: #f6f7f9; --card: #ffffff; --ink: #12151c; --muted: #5b6270; --line: #dde1e8;
+  --accent: #2459d6; --accent-hover: #1a44a8; --accent-bg: #e8eefc; --warn: #8a4b08; --warn-bg: #fdf0dc;
+  --success: #166534; --success-bg: #dcfce7; --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* TOP APP BAR */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(21, 26, 34, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+:root[data-theme="light"] .top-nav {
+  background: rgba(255, 255, 255, 0.88);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.nav-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--muted);
+  transition: all 0.2s ease;
+}
+.nav-pill:hover, .nav-pill.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.icon-btn {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+.icon-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 24px 20px 80px; }
+
+/* HERO OLED SIMULATOR */
+.hero {
+  background: var(--screen);
+  border-radius: 24px;
+  padding: 32px 24px 28px;
+  text-align: center;
+  color: var(--eye);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #1c222c;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(36, 89, 214, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* OLED SCREEN ENCLOSURE */
+.oled-frame {
+  position: relative;
+  max-width: 400px;
+  margin: 0 auto 16px;
+  background: #000000;
+  border-radius: 18px;
+  padding: 14px;
+  border: 2px solid #232a36;
+  box-shadow: inset 0 0 20px rgba(0, 210, 255, 0.05), 0 8px 30px rgba(0,0,0,0.6);
+}
+.screen-mode-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.screen-tab {
+  background: #111620;
+  border: 1px solid #262e3d;
+  color: #9aa4b4;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.screen-tab.active, .screen-tab:hover {
+  background: #1b2744;
+  border-color: #3b5cb0;
+  color: #7ea2ff;
+}
+
+.screen-container {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  background: #000000;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  border: 1px solid #141922;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+  outline: none;
+}
+.screen-container:focus-visible {
+  border-color: #7ea2ff;
+}
+.screen-container::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18),
+    rgba(0, 0, 0, 0.18) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* BASE SCREEN VIEW */
+.screen-view {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.screen-view.active { display: flex; }
+
+/* EYES VIEW */
+.eyes {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.gaze {
+  position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+  animation: look 9s ease-in-out infinite;
+}
+.eye {
+  position: absolute; top: 23.33%; width: 21.33%; height: 53.33%;
+  background: #f2f5f9; border-radius: 25% / 20%;
+  animation: blink 5s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(242, 245, 249, 0.4);
+}
+.eye.l { left: 21%; }
+.eye.r { left: 57.67%; }
+
+.lid-top, .lid-bot { position: absolute; display: block; background: #000000; pointer-events: none; }
+.lid-top { left: -3%; right: -3%; top: -3%; height: 0; transition: height .25s ease; }
+.lid-bot { left: -40%; width: 180%; bottom: -14%; height: 0; border-radius: 50%; transition: height .25s ease; }
+
+.happy .lid-bot { height: 64%; }
+.angry .lid-top { height: 50%; }
+.sad .lid-top { height: 45%; }
+.angry .eye.l .lid-top { clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.angry .eye.r .lid-top { clip-path: polygon(0 0, 100% 0, 0 100%); }
+.sad .eye.l .lid-top { clip-path: polygon(0 0, 100% 0, 0 100%); }
+.sad .eye.r .lid-top { clip-path: polygon(0 0, 100% 0, 100% 100%); }
+
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  94% { transform: scaleY(0.08); }
+}
+@keyframes look {
+  0%   { transform: translate(0, 0); }
+  15%  { transform: translate(6%, 2%); }
+  30%  { transform: translate(-5%, -4%); }
+  45%  { transform: translate(-5%, -4%); }
+  60%  { transform: translate(3%, 5%); }
+  75%  { transform: translate(0, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+/* 1. CLOCK SCREEN - CENTERED & FILLED */
+.time-view {
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: "JetBrains Mono", monospace;
+  text-align: center;
+}
+.time-view.active { display: flex; }
+.oled-clock-time {
+  font-size: 58px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 14px rgba(255, 255, 255, 0.45);
+}
+.oled-clock-date {
+  font-size: 17px;
+  font-weight: 500;
+  color: #e2e8f0;
+  letter-spacing: 0.12em;
+}
+
+/* 2. WEATHER SCREEN - CENTERED & FILLED (EXACT DATA AS ARDUINO) */
+.weather-view {
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", monospace;
+  color: #ffffff;
+  padding: 12px;
+}
+.weather-view.active { display: flex; }
+.weather-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 5px;
+}
+.weather-badge {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #93c5fd;
+  text-transform: uppercase;
+}
+.weather-main-temp {
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
+.weather-details-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.weather-main-cond {
+  color: #ffffff;
+  font-weight: 600;
+}
+.weather-divider {
+  color: #64748b;
+}
+.weather-main-hum {
+  color: #cbd5e1;
+}
+
+.weather-offline-title {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #f87171;
+  line-height: 1.1;
+  margin: 6px 0 2px;
+}
+.weather-offline-msg {
+  font-size: 16px;
+  color: #94a3b8;
+  letter-spacing: 0.04em;
+}
+
+/* 3. SETUP AP SCREEN - CENTERED & FILLED (CLICK OPENS 192.168.4.1) */
+.setup-view {
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", monospace;
+  color: #ffffff;
+  padding: 12px 20px;
+  text-align: center;
+  cursor: pointer;
+}
+.setup-view.active { display: flex; }
+.setup-badge {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #93c5fd;
+  margin-bottom: 10px;
+}
+.setup-box {
+  width: 90%;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.setup-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+  padding-bottom: 4px;
+}
+.setup-row-key {
+  color: #94a3b8;
+  font-weight: 500;
+}
+.setup-row-val {
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* SEARCHING SCREEN - CENTERED & FILLED */
+.searching-view {
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "JetBrains Mono", monospace;
+  text-align: center;
+  gap: 8px;
+}
+.searching-view.active { display: flex; }
+.searching-view h3 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+}
+.searching-ssid-sub {
+  font-size: 15px;
+  color: #94a3b8;
+}
+.searching-dots {
+  display: inline-block;
+}
+
+/* ACTION BUTTONS BAR */
+.action-bar {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mood-row { margin: 12px 0 6px; }
+.chip {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: #151b24;
+  color: #b9c3d3;
+  font-size: 13px;
+  border: 1px solid #232c3b;
+}
+
+.hero h1 { margin: 6px 0 0; font-size: 34px; font-weight: 600; letter-spacing: -0.01em; }
+.hero p { margin: 4px 0 0; color: #9aa4b4; font-size: 15px; }
+.hero .hint { max-width: 520px; margin: 12px auto 0; font-size: 13.5px; color: #8f99a9; }
+
+.hero-links {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 20px; border-radius: 999px;
+  background: #1b2744; color: #9db8ff;
+  text-decoration: none; font-size: 14.5px; font-weight: 500;
+  border: 1px solid #2b3a5f;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn:hover { background: #24345c; border-color: #3b5185; }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+/* 3D VIEWER SECTION */
+.card-section {
+  margin-top: 36px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.card-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.card-desc {
+  color: var(--muted);
+  font-size: 14.5px;
+  margin-top: 2px;
+}
+
+.viewer-3d-box {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  background: radial-gradient(circle at center, #171d28 0%, #0c0f16 100%);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+#threeCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.viewer-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: rgba(13, 16, 22, 0.75);
+  backdrop-filter: blur(8px);
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.viewer-btn-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.viewer-btn {
+  background: #1b2230;
+  color: #c9d2e0;
+  border: 1px solid #2e384d;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.viewer-btn:hover, .viewer-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.color-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.15s;
+}
+.color-dot.active { border-color: #fff; transform: scale(1.2); }
+
+/* SLICER INFO BOX */
+.slicer-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.slicer-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 12px 14px;
+  border-radius: 10px;
+}
+.slicer-card strong { display: block; font-size: 13px; color: var(--muted); }
+.slicer-card span { font-size: 15px; font-weight: 600; color: var(--ink); }
+
+/* WIRING DIAGRAM & FIGURE */
+.fig {
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+.fig img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+figcaption {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* CODE EXPLORER */
+.code-box {
+  background: #090c10;
+  border: 1px solid #1c222c;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 14px;
+}
+.code-header {
+  background: #11151d;
+  padding: 8px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1f2735;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: #9aa4b4;
+}
+.code-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  color: #d1d7e0;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+/* STANDALONE SETUP MODAL USING ARDUINO CODE FILE (setup.html) */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-overlay.active { display: flex; }
+.portal-iframe-container {
+  width: 100%;
+  max-width: 520px;
+  height: 90vh;
+  max-height: 780px;
+  background: #090d18;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.portal-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.portal-modal-close:hover { background: rgba(255, 255, 255, 0.3); }
+
+/* NAV & GENERAL STYLES */
+nav.toc-nav {
+  margin: 28px 0 8px;
+  padding: 18px 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+}
+nav.toc-nav strong { font-weight: 600; font-size: 17px; }
+nav.toc-nav ol { margin: 10px 0 0; padding-left: 20px; columns: 2; column-gap: 32px; }
+nav.toc-nav li { break-inside: avoid; margin: 4px 0; }
+nav.toc-nav a { color: var(--accent); text-decoration: none; font-weight: 500; }
+nav.toc-nav a:hover { text-decoration: underline; }
+
+section { margin-top: 44px; scroll-margin-top: 70px; }
+h2 { font-size: 24px; font-weight: 600; margin: 0 0 12px; line-height: 1.25; }
+h3 { font-size: 18px; font-weight: 600; margin: 24px 0 8px; }
+p { margin: 8px 0; }
+ul, ol { padding-left: 22px; margin: 8px 0; }
+li { margin: 5px 0; }
+code, .mono {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9em;
+  background: var(--accent-bg);
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin: 14px 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: var(--card-shadow);
+}
+table { border-collapse: collapse; width: 100%; min-width: 440px; font-size: 15px; }
+th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); font-size: 13.5px; background: var(--bg); text-transform: uppercase; letter-spacing: 0.04em; }
+tr:last-child td { border-bottom: none; }
+
+.note, .warn {
+  margin: 16px 0;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+.note { background: var(--accent-bg); border-left: 4px solid var(--accent); }
+.warn { background: var(--warn-bg); border-left: 4px solid var(--warn); color: var(--warn); }
+.note p, .warn p { margin: 0; }
+
+.steps { list-style: none; padding: 0; counter-reset: s; }
+.steps li {
+  counter-increment: s;
+  position: relative;
+  padding: 14px 16px 14px 56px;
+  margin: 10px 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+.steps li::before {
+  content: counter(s);
+  position: absolute; left: 16px; top: 14px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600;
+}
+
+.cred {
+  display: grid; grid-template-columns: auto 1fr; gap: 4px 16px;
+  background: var(--screen); color: var(--eye);
+  padding: 14px 18px; border-radius: 12px; margin: 12px 0;
+  font-family: "JetBrains Mono", monospace; font-size: 15px;
+  border: 1px solid #1f2735;
+}
+.cred span:nth-child(odd) { color: #8e98a8; }
+
+footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  nav.toc-nav ol { columns: 1; }
+  .hero h1 { font-size: 28px; }
+  h2 { font-size: 21px; }
+  .top-nav .nav-pill { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<header class="top-nav">
+  <a href="#hero" class="brand">
+    <span>🤖 Momo Bot</span>
+  </a>
+  <div class="nav-links">
+    <a href="#hero" class="nav-pill active">Robot Eyes</a>
+    <a href="#viewer3d" class="nav-pill">3D Model (STL)</a>
+    <a href="#wiring" class="nav-pill">Wiring</a>
+    <a href="#code" class="nav-pill">Firmware</a>
+    <a href="http://192.168.4.1" target="_blank" class="nav-pill" style="color:var(--accent); font-weight:600">📶 ESP IP (192.168.4.1)</a>
+    <a href="#specs" class="nav-pill">Specs</a>
+  </div>
+  <div class="nav-actions">
+    <button class="icon-btn" id="soundBtn" title="Toggle Sound">🔊</button>
+    <button class="icon-btn" id="themeBtn" title="Toggle Dark/Light Theme">🌓</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- HERO OLED INTERACTIVE SIMULATOR -->
+<header class="hero" id="hero">
+  <div class="screen-mode-tabs">
+    <button class="screen-tab active" onclick="switchOledScreen('eyes')">👀 Eyes Face</button>
+    <button class="screen-tab" onclick="switchOledScreen('time')">⏰ Clock Screen</button>
+    <button class="screen-tab" onclick="switchOledScreen('weather')">⛅ Weather Screen</button>
+    <button class="screen-tab" onclick="switchOledScreen('setup')">📶 Setup Mode</button>
+    <button class="screen-tab" onclick="switchOledScreen('searching')">🔍 Searching WiFi</button>
+  </div>
+
+  <div class="oled-frame">
+    <div class="screen-container" id="oledScreen" tabindex="0" role="button" aria-label="Momo OLED Screen: Tap once for Happy, 3 quick taps for Angry, Hold 5s for Time">
+      <!-- EYES VIEW -->
+      <div class="screen-view active" id="viewEyes">
+        <div class="eyes" id="eyes">
+          <div class="gaze">
+            <div class="eye l"><i class="lid-top"></i><i class="lid-bot"></i></div>
+            <div class="eye r"><i class="lid-top"></i><i class="lid-bot"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. TIME VIEW (CENTERED & FILLED TO DISPLAY) -->
+      <div class="screen-view time-view" id="viewTime">
+        <div class="oled-clock-time" id="oledClock">17:36</div>
+        <div class="oled-clock-date" id="oledDate">08/10/2026</div>
+      </div>
+
+      <!-- 2. WEATHER VIEW (CENTERED & FILLED TO DISPLAY, EXACT ARDUINO CODE VALUES) -->
+      <div class="screen-view weather-view" id="viewWeather">
+        <!-- Online State -->
+        <div class="weather-content" id="weatherOnlineState">
+          <div class="weather-badge">WEATHER</div>
+          <div class="weather-main-temp"><span id="oledWeatherTemp">28.5</span> C</div>
+          <div class="weather-details-row">
+            <span class="weather-main-cond" id="oledWeatherStatus">Cloudy</span>
+            <span class="weather-divider">&bull;</span>
+            <span class="weather-main-hum">Humidity <span id="oledHumidity">72</span>%</span>
+          </div>
+        </div>
+        <!-- Offline State -->
+        <div class="weather-content" id="weatherOfflineState" style="display:none">
+          <div class="weather-badge">WEATHER</div>
+          <div class="weather-offline-title">OFFLINE</div>
+          <div class="weather-offline-msg">No internet</div>
+        </div>
+      </div>
+
+      <!-- 3. SETUP AP VIEW (CENTERED & FILLED TO DISPLAY, CLICK OPENS ESP IP) -->
+      <div class="screen-view setup-view" id="viewSetup" onclick="openEspSetupIp()" title="Click to open http://192.168.4.1">
+        <div class="setup-badge">MOMO SETUP</div>
+        <div class="setup-box">
+          <div class="setup-row-item">
+            <span class="setup-row-key">WiFi:</span>
+            <span class="setup-row-val">Momo-Setup</span>
+          </div>
+          <div class="setup-row-item">
+            <span class="setup-row-key">Pass:</span>
+            <span class="setup-row-val">12345678</span>
+          </div>
+          <div class="setup-row-item">
+            <span class="setup-row-key">IP:</span>
+            <span class="setup-row-val">192.168.4.1 ↗</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. SEARCHING VIEW (CENTERED & FILLED TO DISPLAY) -->
+      <div class="screen-view searching-view" id="viewSearching">
+        <h3>SEARCHING<span class="searching-dots">...</span></h3>
+        <div class="searching-ssid-sub" id="searchingSSID">Home-WiFi-2.4G</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mood-row">
+    <span class="chip" id="moodChip">Mood: Normal</span>
+    <span class="chip" id="screenStateChip" style="margin-left:4px">Screen: EYES</span>
+    <button class="chip" id="offlineToggleChip" onclick="toggleOfflineWeatherSimulation()" style="margin-left:4px; cursor:pointer" title="Toggle between Online & Offline weather display from Arduino code">Mode: Online</button>
+  </div>
+
+  <h1>Momo Desktop Robot</h1>
+  <p>Interactive Companion, Clock, and Weather Display</p>
+  
+  <p class="hint">
+    Try tapping or holding Momo's screen: <strong>Tap once</strong> for Happy, <strong>3 quick taps</strong> for Angry, <strong>Hold 5s</strong> for Time/Weather, or leave alone for Sad.
+  </p>
+
+  <!-- ACTION BUTTONS (WHEN WI-FI SETUP PRESSED, OPENS 192.168.4.1 DIRECTLY) -->
+  <div class="action-bar">
+    <button class="btn btn-primary" onclick="openEspSetupIp()" title="Opens the ESP8266 Setup Portal IP (192.168.4.1) directly">📶 Wi-Fi Setup (Open 192.168.4.1)</button>
+    <button class="btn" onclick="openPortalModal()">💻 Offline Portal Simulator</button>
+    <a class="btn" href="setup.html" target="_blank">📄 View setup.html</a>
+  </div>
+
+  <div class="hero-links">
+    <a class="btn btn-primary" href="#viewer3d">🧊 3D Model (.STL)</a>
+    <a class="btn" href="#wiring">⚡ Wiring Diagram</a>
+    <a class="btn" href="#code">📄 momo_bot.ino Code</a>
+    <a class="btn" href="momo_bot_final.stl" download="momo_bot final.STL">⬇️ Download .STL</a>
+  </div>
+</header>
+
+<!-- TABLE OF CONTENTS -->
+<nav class="toc-nav" aria-label="Contents">
+  <strong>User Manual Contents</strong>
+  <ol>
+    <li><a href="#viewer3d">Interactive 3D Robot Enclosure (STL)</a></li>
+    <li><a href="#start">Getting started & Power</a></li>
+    <li><a href="#setup">First-time Wi-Fi setup</a></li>
+    <li><a href="#touch">Touch controls & Gestures</a></li>
+    <li><a href="#faces">Faces and moods</a></li>
+    <li><a href="#clock">Time and weather display</a></li>
+    <li><a href="#offline">Offline mode operation</a></li>
+    <li><a href="#change">Changing Wi-Fi network</a></li>
+    <li><a href="#help">Troubleshooting guide</a></li>
+    <li><a href="#wiring">Wiring diagram & Pins</a></li>
+    <li><a href="#code">Arduino Firmware Source</a></li>
+    <li><a href="#specs">Technical specifications</a></li>
+  </ol>
+</nav>
+
+<!-- 3D MODEL VIEWER SECTION -->
+<section id="viewer3d" class="card-section">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">Interactive 3D Robot Enclosure (STL Model)</h2>
+      <p class="card-desc">Inspect Momo's 3D printable shell parsed directly from <code>momo_bot final.STL</code>. Drag to rotate 360°, scroll to zoom.</p>
+    </div>
+    <div style="display:flex; gap:8px">
+      <a class="btn btn-primary" href="momo_bot_final.stl" download="momo_bot final.STL">⬇️ Download .STL</a>
+      <a class="btn" href="https://github.com/ARUNKANNAA/momo_bot/blob/main/momo_bot%20final.STL" target="_blank" rel="noopener">GitHub STL</a>
+    </div>
+  </div>
+
+  <div class="viewer-3d-box">
+    <canvas id="threeCanvas"></canvas>
+    
+    <div class="viewer-controls">
+      <div class="viewer-btn-group">
+        <button class="viewer-btn active" id="btnResetView" onclick="reset3DView()">Center</button>
+        <button class="viewer-btn" id="btnAutoRotate" onclick="toggleAutoRotate()">Auto Rotate</button>
+        <button class="viewer-btn" id="btnWireframe" onclick="toggleWireframe()">Wireframe</button>
+      </div>
+
+      <!-- FILAMENT COLOR SELECTOR: ONLY RED, WHITE, BLACK, AND DARK BLUE AS REQUESTED -->
+      <div class="viewer-btn-group" style="align-items:center">
+        <span style="font-size:12px; color:#9aa4b4; margin-right:4px">Filament:</span>
+        <span class="color-dot" style="background:#dc2626" onclick="changeModelColor('#dc2626')" title="Red"></span>
+        <span class="color-dot active" style="background:#f2f5f9" onclick="changeModelColor('#f2f5f9')" title="White"></span>
+        <span class="color-dot" style="background:#12151c" onclick="changeModelColor('#12151c')" title="Black"></span>
+        <span class="color-dot" style="background:#172554" onclick="changeModelColor('#172554')" title="Dark Blue"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slicer-info">
+    <div class="slicer-card">
+      <strong>Model Format</strong>
+      <span>Binary STL (5,460 Triangles)</span>
+    </div>
+    <div class="slicer-card">
+      <strong>Dimensions</strong>
+      <span>40.0 &times; 40.0 &times; 40.0 mm</span>
+    </div>
+    <div class="slicer-card">
+      <strong>Recommended Layer Height</strong>
+      <span>0.2 mm (Standard)</span>
+    </div>
+    <div class="slicer-card">
+      <strong>Infill Density</strong>
+      <span>15% - 20% Gyroid</span>
+    </div>
+    <div class="slicer-card">
+      <strong>Filament Material</strong>
+      <span>PLA / PETG</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 1: GETTING STARTED -->
+<section id="start">
+  <h2>1. Getting started</h2>
+  <p>Momo is an expressive desktop companion robot built with an ESP8266 Wemos D1 mini and a 0.96" I2C OLED screen. It reacts dynamically to your touch, shows ambient moods, and displays live synchronized time and weather.</p>
+
+  <h3>Power on and off</h3>
+  <p>Slide the miniature power switch to turn Momo on or off. The switch is wired between the TP4056 output and the D1 mini 5V pin, safely cutting battery power to the microcontroller.</p>
+
+  <h3>Charging the battery</h3>
+  <p>Plug a standard USB-C cable into the TP4056 charger board. The 3.7V 500mAh LiPo battery charges safely even when Momo's power switch is turned off.</p>
+  <div class="warn">
+    <p>⚠️ <strong>Important Safety Warning:</strong> Do not plug USB power into the Wemos D1 mini board while the battery is connected to its 5V pin. Always charge through the TP4056 USB-C port only.</p>
+  </div>
+
+  <h3>Power-on sequence</h3>
+  <ol>
+    <li><strong>SEARCHING...</strong> with animated dots and your saved Wi-Fi name for up to 15 seconds while connecting.</li>
+    <li>Animated eyes appear with natural blinking and wander gaze. Momo is ready!</li>
+  </ol>
+  <p>If Momo has no saved network or cannot reach it, it automatically opens the setup screen. See below.</p>
+</section>
+
+<!-- SECTION 2: WIFI SETUP -->
+<section id="setup">
+  <h2>2. First-time Wi-Fi setup</h2>
+  <p>Momo connects to Wi-Fi to synchronize real-time clock via NTP and fetch current weather from Open-Meteo. Wi-Fi credentials are saved in EEPROM so Momo remembers them across power cycles.</p>
+
+  <p>When Momo has no network saved or cannot connect, it broadcasts its own setup hotspot:</p>
+  <div class="cred">
+    <span>WiFi SSID</span><span>Momo-Setup</span>
+    <span>Password</span><span>12345678</span>
+    <span>Portal IP</span><span><a href="http://192.168.4.1" target="_blank" style="color:#93c5fd; text-decoration:underline">192.168.4.1</a></span>
+  </div>
+
+  <ol class="steps">
+    <li>On your smartphone or PC, go to Wi-Fi settings and connect to <strong>Momo-Setup</strong> with password <code>12345678</code>.</li>
+    <li>Open browser and go to <a href="http://192.168.4.1" target="_blank"><strong>http://192.168.4.1</strong></a>. The Momo setup page opens.</li>
+    <li>Enter your <strong>2.4 GHz Wi-Fi Name</strong> and <strong>Password</strong>.</li>
+    <li>Click <strong>Detect My Location</strong> to auto-fill your exact latitude and longitude for weather.</li>
+    <li>Click <strong>SAVE &amp; CONNECT</strong>. Momo saves credentials to EEPROM, restarts, and connects.</li>
+  </ol>
+
+  <div style="margin: 14px 0;">
+    <a class="btn btn-primary" href="http://192.168.4.1" target="_blank">🌐 Open Momo Setup IP (http://192.168.4.1)</a>
+  </div>
+
+  <div class="note">
+    <p>💡 <strong>Note:</strong> Momo works only on 2.4 GHz Wi-Fi networks (ESP8266 does not support 5 GHz). You can also view the exact setup file at <a href="setup.html" target="_blank">setup.html</a>!</p>
+  </div>
+</section>
+
+<!-- SECTION 3: TOUCH CONTROLS -->
+<section id="touch">
+  <h2>3. Touch controls</h2>
+  <p>Momo uses a TTP223 capacitive touch module hidden beneath its head enclosure. Touch it with quick taps or long holds:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Screen / Mode</th><th>Touch Action</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Eyes (Normal)</td><td>Single tap (&lt; 0.5s)</td><td><strong>Happy face</strong> for 5 seconds</td></tr>
+        <tr><td>Eyes (Normal)</td><td>Triple tap quickly (&lt; 0.7s apart)</td><td><strong>Angry face</strong> for 5 seconds</td></tr>
+        <tr><td>Eyes (Any)</td><td>Long press (5 seconds)</td><td>Opens <strong>Time screen</strong></td></tr>
+        <tr><td>Time Screen</td><td>Single tap</td><td>Opens <strong>Weather screen</strong></td></tr>
+        <tr><td>Time Screen</td><td>Long press (5 seconds)</td><td>Back to <strong>Eyes</strong></td></tr>
+        <tr><td>Weather Screen</td><td>Long press (5 seconds)</td><td>Back to <strong>Eyes</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Touch Tips</h3>
+  <ul>
+    <li>For the angry face, tap in rapid succession (under 0.7 seconds between taps).</li>
+    <li>A hold shorter than 5 seconds but longer than 0.5 seconds is ignored as an accidental contact.</li>
+    <li>The Time and Weather screens automatically return to Eyes after 10 seconds of inactivity.</li>
+  </ul>
+</section>
+
+<!-- SECTION 4: FACES AND MOODS -->
+<section id="faces">
+  <h2>4. Faces and moods</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Face State</th><th>Trigger</th><th>Duration</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Normal</strong></td><td>Startup default, and after any emotion expires</td><td>Continuous idle</td></tr>
+        <tr><td><strong>Happy</strong></td><td>Single tap on touch sensor</td><td>5 seconds</td></tr>
+        <tr><td><strong>Angry</strong></td><td>Triple tap in quick succession</td><td>5 seconds</td></tr>
+        <tr><td><strong>Sad</strong> (Tired droopy eyelids)</td><td>No one touches Momo for 60 seconds</td><td>20 seconds, then returns to Normal</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>While in normal mood, Momo's eyes randomly look left, right, up, and down, and blink naturally every few seconds.</p>
+</section>
+
+<!-- SECTION 5: CLOCK AND WEATHER -->
+<section id="clock">
+  <h2>5. Time and weather</h2>
+  <h3>Time Screen</h3>
+  <p>Hold the touch sensor for 5 seconds from the eyes. Momo displays the time in 24-hour format (<code>HH:MM</code>) with the date below (<code>DD/MM/YYYY</code>). In the default firmware, time is configured for Indian Standard Time (UTC+5:30) via NTP.</p>
+
+  <h3>Weather Screen (As coded in Arduino)</h3>
+  <p>Single tap on the time screen. Momo fetches free real-time weather from Open-Meteo based on the latitude &amp; longitude saved during setup:</p>
+  <ul>
+    <li><code>WEATHER</code> (header at top)</li>
+    <li><code>28.5 C</code> (temperature with one decimal place)</li>
+    <li><code>Cloudy</code> (condition text mapped from WMO code: Clear, Cloudy, Overcast, Fog, Drizzle, Rain, Snow, Showers, Storm)</li>
+    <li><code>Humidity 72%</code> (relative humidity percentage)</li>
+  </ul>
+  <p>Weather data automatically refreshes in the background every 10 minutes.</p>
+</section>
+
+<!-- SECTION 6: OFFLINE MODE -->
+<section id="offline">
+  <h2>6. Offline mode</h2>
+  <p>If Wi-Fi disconnects or is unavailable, Momo gracefully transitions to offline mode without freezing:</p>
+  <ul>
+    <li>All touch reactions, animated eyes, happy, and angry expressions continue working.</li>
+    <li>The weather screen displays <strong>OFFLINE</strong> and <strong>No internet</strong>.</li>
+    <li>Momo automatically attempts to quietly reconnect in the background every 60 seconds. When Wi-Fi recovers, the clock and weather automatically resume.</li>
+  </ul>
+</section>
+
+<!-- SECTION 7: CHANGING WIFI -->
+<section id="change">
+  <h2>7. Changing Wi-Fi later</h2>
+  <p>To connect Momo to a new Wi-Fi network:</p>
+  <ol>
+    <li>Turn off Momo using the slide switch.</li>
+    <li>Move Momo out of range of your old Wi-Fi, or temporarily turn off your old router.</li>
+    <li>Turn Momo on. After 15 seconds of searching, Momo automatically re-opens the <strong>Momo-Setup</strong> AP.</li>
+    <li>Connect to <strong>Momo-Setup</strong> and submit your new Wi-Fi credentials at <code>192.168.4.1</code>.</li>
+  </ol>
+</section>
+
+<!-- SECTION 8: TROUBLESHOOTING -->
+<section id="help">
+  <h2>8. Troubleshooting</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Issue</th><th>Probable Cause</th><th>Solution</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Screen stays blank</td><td>Wiring / Power issue</td><td>Verify battery charge and slide switch. Check OLED wiring: SDA to D2, SCL to D1, VCC to 3V3, GND to G. Ensure I2C address is <code>0x3C</code>.</td></tr>
+        <tr><td>Stuck on Setup screen</td><td>Awaiting configuration</td><td>Connect phone to <code>Momo-Setup</code>, open <code>192.168.4.1</code>, and submit your Wi-Fi details.</td></tr>
+        <tr><td>Cannot open 192.168.4.1</td><td>Mobile data interference</td><td>Turn off cellular mobile data on your phone while connected to <code>Momo-Setup</code>, then open <code>192.168.4.1</code> in browser.</td></tr>
+        <tr><td>Wi-Fi fails to connect</td><td>5 GHz network / Typo</td><td>ESP8266 only supports 2.4 GHz. Verify your network is 2.4 GHz and check password for typos.</td></tr>
+        <tr><td>Touch sensor unresponsive</td><td>Wiring / Grounding</td><td>Check TTP223 wiring: I/O to D5, VCC to 3V3, GND to G. Ensure sensor pad is close to outer enclosure plastic.</td></tr>
+        <tr><td>Random resets or screen flickering</td><td>Low battery voltage</td><td>Recharge battery via TP4056 USB-C port. Check that the 100 µF capacitor is installed across 5V and GND.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 9: WIRING DIAGRAM -->
+<section id="wiring">
+  <h2>9. Wiring diagram</h2>
+  <p>Below is the complete wiring diagram for Momo robot. Components: LiPo Battery, TP4056 USB-C Charger &amp; Protection module, 3-pin Slide Switch, Wemos D1 Mini (ESP8266), 100 µF capacitor, 0.96" SSD1306 OLED display, and TTP223 capacitive touch module.</p>
+
+  <figure class="fig">
+    <img src="assets/wiring_diagram.jpg" alt="Momo Robot Wiring Diagram">
+    <figcaption>Complete hardware wiring diagram: LiPo battery to TP4056 charger, slide switch, Wemos D1 mini with 100µF capacitor, OLED on D1/D2, touch sensor on D5.</figcaption>
+  </figure>
+
+  <h3>Pin Connection Reference</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Component Pin</th><th>Wemos D1 Mini Pin</th><th>Function / Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Battery Red (+)</td><td>TP4056 <code>B+</code></td><td>LiPo positive input (3.7V)</td></tr>
+        <tr><td>Battery Black (-)</td><td>TP4056 <code>B-</code></td><td>LiPo negative ground</td></tr>
+        <tr><td>TP4056 <code>OUT+</code></td><td>Slide switch (Outer pin)</td><td>Protected power output</td></tr>
+        <tr><td>Slide switch (Center pin)</td><td>D1 mini <code>5V</code></td><td>Main system power switched</td></tr>
+        <tr><td>TP4056 <code>OUT-</code></td><td>D1 mini <code>G</code> (GND)</td><td>System common ground</td></tr>
+        <tr><td>100 µF Capacitor (+)</td><td>D1 mini <code>5V</code></td><td>Power rail smoothing</td></tr>
+        <tr><td>100 µF Capacitor (-)</td><td>D1 mini <code>G</code> (GND)</td><td>Filter ground (striped leg)</td></tr>
+        <tr><td>0.96" OLED <code>VCC</code></td><td>D1 mini <code>3V3</code></td><td>3.3V Logic &amp; power</td></tr>
+        <tr><td>0.96" OLED <code>GND</code></td><td>D1 mini <code>G</code> (GND)</td><td>Ground</td></tr>
+        <tr><td>0.96" OLED <code>SCL</code></td><td>D1 mini <code>D1</code> (GPIO5)</td><td>I2C Clock line</td></tr>
+        <tr><td>0.96" OLED <code>SDA</code></td><td>D1 mini <code>D2</code> (GPIO4)</td><td>I2C Data line</td></tr>
+        <tr><td>TTP223 Touch <code>VCC</code></td><td>D1 mini <code>3V3</code></td><td>Sensor power</td></tr>
+        <tr><td>TTP223 Touch <code>GND</code></td><td>D1 mini <code>G</code> (GND)</td><td>Sensor ground</td></tr>
+        <tr><td>TTP223 Touch <code>I/O</code></td><td>D1 mini <code>D5</code> (GPIO14)</td><td>Capacitive touch digital output</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 10: SOURCE CODE EXPLORER -->
+<section id="code" class="card-section">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">10. Arduino firmware (<code>momo_bot.ino</code>)</h2>
+      <p class="card-desc">Full firmware source code for the Wemos D1 mini. Supports RoboEyes, NTP, Open-Meteo, EEPROM, and AP Portal.</p>
+    </div>
+    <div style="display:flex; gap:8px">
+      <button class="btn" onclick="copySourceCode()">📋 Copy Code</button>
+      <a class="btn btn-primary" href="momo_bot.ino" download="momo_bot.ino">⬇️ Download .ino</a>
+    </div>
+  </div>
+
+  <div class="code-box">
+    <div class="code-header">
+      <span>momo_bot.ino &bull; 1568 lines &bull; C++ (Arduino)</span>
+      <span id="copyFeedback" style="color:var(--success); font-weight:600; display:none">Copied to clipboard!</span>
+    </div>
+    <div class="code-content" id="codeContent">Loading momo_bot.ino source code...</div>
+  </div>
+</section>
+
+<!-- SECTION 11: SPECIFICATIONS -->
+<section id="specs">
+  <h2>11. Specifications</h2>
+  <div class="table-wrap">
+    <table>
+      <tbody>
+        <tr><td>Microcontroller</td><td>Wemos D1 mini (ESP8266EX @ 80/160 MHz)</td></tr>
+        <tr><td>Display</td><td>0.96" SSD1306 OLED, 128 &times; 64 resolution, I2C (0x3C)</td></tr>
+        <tr><td>Graphics Engine</td><td>FluxGarage RoboEyes + Adafruit SSD1306 GFX</td></tr>
+        <tr><td>Input Sensor</td><td>TTP223 Capacitive Touch sensor (Active HIGH)</td></tr>
+        <tr><td>Battery</td><td>3.7V 500mAh Lithium Polymer (LiPo)</td></tr>
+        <tr><td>Charging Circuit</td><td>TP4056 USB-C with DW01A protection &amp; FS8205A MOSFET</td></tr>
+        <tr><td>Power Filter</td><td>100 µF electrolytic decoupling capacitor across 5V and GND</td></tr>
+        <tr><td>Wi-Fi Standard</td><td>802.11 b/g/n (2.4 GHz only)</td></tr>
+        <tr><td>Clock Synchronization</td><td>NTP Server (UTC+5:30 default, configurable)</td></tr>
+        <tr><td>Weather Provider</td><td>Open-Meteo REST API (HTTP Client + ArduinoJson)</td></tr>
+        <tr><td>Hotspot Configuration</td><td>SSID: <code>Momo-Setup</code>, WPA2: <code>12345678</code>, IP: <code>192.168.4.1</code></td></tr>
+        <tr><td>Persistent Storage</td><td>Internal EEPROM (SSID, Password, Latitude, Longitude)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 12: REPOSITORY & DOWNLOADS -->
+<section id="files">
+  <h2>12. Code and 3D files</h2>
+  <ul>
+    <li><a href="momo_bot.ino" download><strong>momo_bot.ino</strong></a>: Complete Arduino sketch for Wemos D1 mini.</li>
+    <li><a href="momo_bot_final.stl" download="momo_bot final.STL"><strong>momo_bot final.STL</strong></a>: 3D CAD printable model for robot enclosure.</li>
+    <li><a href="setup.html" target="_blank"><strong>setup.html</strong></a>: The exact Wi-Fi setup web page from the Arduino code.</li>
+    <li><a href="https://github.com/ARUNKANNAA/momo_bot" target="_blank" rel="noopener"><strong>GitHub Repository: ARUNKANNAA/momo_bot</strong></a>.</li>
+  </ul>
+</section>
+
+<footer>
+  Momo Desktop Robot &bull; 3D Print STL Enclosure &bull; Localhost Hub
+</footer>
+
+</div>
+
+<!-- STANDALONE SETUP MODAL USING THE EXACT ARDUINO CODE FILE (setup.html) -->
+<div class="modal-overlay" id="portalModal">
+  <div class="portal-iframe-container">
+    <button class="portal-modal-close" onclick="closePortalModal()" title="Close Portal">✕</button>
+    <iframe src="setup.html" style="width:100%; height:100%; border:none;" title="Momo Setup Portal"></iframe>
+  </div>
+</div>
+
+<!-- SCRIPTS: THREE.JS, CONTROLS, STL LOADER & INTERACTION LOGIC -->
+<script src="assets/three.min.js"></script>
+<script src="assets/OrbitControls.js"></script>
+<script src="assets/STLLoader.js"></script>
+
+<script>
+// ============================================================
+// AUDIO SYNTHESIS FOR ROBOT BEEPS
+// ============================================================
+var audioCtx = null;
+var soundEnabled = true;
+
+function playRobotBeep(freq, type, duration) {
+  if (!soundEnabled) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(freq || 600, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (duration || 0.12));
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + (duration || 0.12));
+  } catch (e) {}
+}
+
+document.getElementById('soundBtn').addEventListener('click', function () {
+  soundEnabled = !soundEnabled;
+  this.textContent = soundEnabled ? '🔊' : '🔇';
+  this.title = soundEnabled ? 'Sound enabled' : 'Sound muted';
+  if (soundEnabled) playRobotBeep(880, 'sine', 0.1);
+});
+
+// ============================================================
+// THEME SWITCHER
+// ============================================================
+var themeBtn = document.getElementById('themeBtn');
+themeBtn.addEventListener('click', function () {
+  var current = document.documentElement.getAttribute('data-theme');
+  var isDark = current === 'dark' || (!current && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  var next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  themeBtn.textContent = next === 'dark' ? '🌙' : '☀️';
+});
+
+// ============================================================
+// OPEN ESP SETUP IP (192.168.4.1) DIRECTLY
+// ============================================================
+function openEspSetupIp() {
+  playRobotBeep(650, 'sine', 0.15);
+  window.open('http://192.168.4.1', '_blank');
+}
+
+// ============================================================
+// ROBOT EYES & SCREEN STATE MACHINE
+// ============================================================
+(function () {
+  var el = document.getElementById('eyes');
+  var chip = document.getElementById('moodChip');
+  var screenChip = document.getElementById('screenStateChip');
+  var names = { normal: 'Normal', happy: 'Happy', angry: 'Angry', sad: 'Sad' };
+
+  var moodTimer = null, idleTimer = null, taps = 0, lastTap = 0, downAt = 0;
+  var currentScreen = 'eyes';
+  var holdInterval = null;
+  var screenAutoReturnTimer = null;
+
+  window.setMood = function (m) {
+    if (!el) return;
+    el.classList.remove('happy', 'angry', 'sad');
+    if (m !== 'normal') el.classList.add(m);
+    chip.textContent = 'Mood: ' + names[m];
+    if (m === 'happy') {
+      playRobotBeep(650, 'sine', 0.1);
+      setTimeout(function() { playRobotBeep(880, 'sine', 0.15); }, 100);
+    } else if (m === 'angry') {
+      playRobotBeep(240, 'sawtooth', 0.25);
+    } else if (m === 'sad') {
+      playRobotBeep(330, 'triangle', 0.3);
+    }
+  };
+
+  function armIdle() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(function () {
+      setMood('sad');
+      moodTimer = setTimeout(function () {
+        setMood('normal');
+        armIdle();
+      }, 20000);
+    }, 60000);
+  }
+
+  function handleShortTap() {
+    var now = Date.now();
+    clearTimeout(moodTimer);
+
+    if (currentScreen === 'eyes') {
+      if (taps > 0 && now - lastTap > 700) taps = 0;
+      taps++;
+      lastTap = now;
+      if (taps >= 3) {
+        taps = 0;
+        setMood('angry');
+      } else {
+        setMood('happy');
+      }
+      moodTimer = setTimeout(function () { setMood('normal'); }, 5000);
+      armIdle();
+    } else if (currentScreen === 'time') {
+      // Tap on Time -> Weather screen (as in Arduino code)
+      switchOledScreen('weather');
+      resetAutoReturn();
+    } else if (currentScreen === 'weather') {
+      // In Arduino code line 1238: tap on weather does nothing; long press returns to normal
+      resetAutoReturn();
+    }
+  }
+
+  function handleLongPress() {
+    playRobotBeep(520, 'sine', 0.2);
+    setTimeout(function() { playRobotBeep(1040, 'sine', 0.25); }, 200);
+
+    if (currentScreen === 'eyes') {
+      // Long press (5s) -> TIME
+      switchOledScreen('time');
+      resetAutoReturn();
+    } else {
+      // Long press (5s) from Time or Weather -> Back to NORMAL FACE
+      switchOledScreen('eyes');
+    }
+  }
+
+  function resetAutoReturn() {
+    clearTimeout(screenAutoReturnTimer);
+    screenAutoReturnTimer = setTimeout(function () {
+      if (currentScreen === 'time' || currentScreen === 'weather') {
+        switchOledScreen('eyes');
+      }
+    }, 10000);
+  }
+
+  // DIRECT TOUCH & HOLD ON THE OLED SCREEN CONTAINER
+  var oledScreen = document.getElementById('oledScreen');
+  if (oledScreen) {
+    oledScreen.addEventListener('pointerdown', function () {
+      downAt = Date.now();
+      var heldMs = 0;
+      clearInterval(holdInterval);
+      holdInterval = setInterval(function () {
+        heldMs = Date.now() - downAt;
+        if (heldMs >= 5000) {
+          clearInterval(holdInterval);
+          handleLongPress();
+        }
+      }, 100);
+    });
+
+    oledScreen.addEventListener('pointerup', function () {
+      var duration = Date.now() - downAt;
+      clearInterval(holdInterval);
+      if (duration <= 500) {
+        handleShortTap();
+      }
+    });
+
+    oledScreen.addEventListener('pointercancel', function () {
+      clearInterval(holdInterval);
+    });
+
+    oledScreen.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleShortTap();
+      }
+    });
+  }
+
+  armIdle();
+})();
+
+// ============================================================
+// SCREEN SWITCHER
+// ============================================================
+function switchOledScreen(mode) {
+  var views = document.querySelectorAll('.screen-view');
+  views.forEach(function (v) { v.classList.remove('active'); });
+
+  var tabs = document.querySelectorAll('.screen-tab');
+  tabs.forEach(function (t) { t.classList.remove('active'); });
+
+  var targetView = document.getElementById('view' + mode.charAt(0).toUpperCase() + mode.slice(1));
+  if (targetView) targetView.classList.add('active');
+
+  var screenChip = document.getElementById('screenStateChip');
+  if (screenChip) screenChip.textContent = 'Screen: ' + mode.toUpperCase();
+
+  // Highlight tab
+  tabs.forEach(function (tab) {
+    if (tab.getAttribute('onclick') && tab.getAttribute('onclick').includes(mode)) {
+      tab.classList.add('active');
+    }
+  });
+
+  currentScreen = mode;
+  playRobotBeep(440, 'triangle', 0.08);
+}
+
+// TOGGLE WEATHER ONLINE / OFFLINE SIMULATION
+var isSimulatedOffline = false;
+function toggleOfflineWeatherSimulation() {
+  isSimulatedOffline = !isSimulatedOffline;
+  var onlineBox = document.getElementById('weatherOnlineState');
+  var offlineBox = document.getElementById('weatherOfflineState');
+  var chip = document.getElementById('offlineToggleChip');
+
+  if (isSimulatedOffline) {
+    onlineBox.style.display = 'none';
+    offlineBox.style.display = 'block';
+    chip.textContent = 'Mode: Offline';
+    chip.style.borderColor = 'var(--warn)';
+    chip.style.color = 'var(--warn)';
+  } else {
+    onlineBox.style.display = 'block';
+    offlineBox.style.display = 'none';
+    chip.textContent = 'Mode: Online';
+    chip.style.borderColor = 'var(--line)';
+    chip.style.color = 'var(--ink)';
+  }
+}
+
+// LIVE CLOCK UPDATE (UTC + 5:30 for India as per sketch: strftime %H:%M and %d/%m/%Y)
+function updateClock() {
+  var now = new Date();
+  var utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+  var istTime = new Date(utc + (5.5 * 3600000));
+
+  var hh = String(istTime.getHours()).padStart(2, '0');
+  var mm = String(istTime.getMinutes()).padStart(2, '0');
+  var dd = String(istTime.getDate()).padStart(2, '0');
+  var mo = String(istTime.getMonth() + 1).padStart(2, '0');
+  var yyyy = istTime.getFullYear();
+
+  var clockEl = document.getElementById('oledClock');
+  var dateEl = document.getElementById('oledDate');
+  if (clockEl) clockEl.textContent = hh + ':' + mm;
+  if (dateEl) dateEl.textContent = dd + '/' + mo + '/' + yyyy;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ============================================================
+// MODAL SETUP SIMULATOR
+// ============================================================
+function openPortalModal() {
+  document.getElementById('portalModal').classList.add('active');
+  playRobotBeep(520, 'sine', 0.1);
+}
+function closePortalModal() {
+  document.getElementById('portalModal').classList.remove('active');
+}
+
+// ============================================================
+// THREE.JS 3D STL MODEL VIEWER (RED, WHITE, BLACK, DARK BLUE)
+// ============================================================
+var scene, camera, renderer, controls;
+var stlMesh = null;
+var isAutoRotate = false;
+var currentHex = 0xf2f5f9;
+
+function init3DViewer() {
+  var box = document.querySelector('.viewer-3d-box');
+  var canvas = document.getElementById('threeCanvas');
+  if (!box || !canvas || typeof THREE === 'undefined') return;
+
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(40, box.clientWidth / box.clientHeight, 0.1, 1000);
+  camera.position.set(0, -65, 55);
+
+  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  renderer.setSize(box.clientWidth, box.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Lighting
+  var ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+  scene.add(ambientLight);
+
+  var dirLight1 = new THREE.DirectionalLight(0xffffff, 0.85);
+  dirLight1.position.set(40, 50, 60);
+  scene.add(dirLight1);
+
+  var dirLight2 = new THREE.DirectionalLight(0x7ea2ff, 0.45);
+  dirLight2.position.set(-40, -30, -30);
+  scene.add(dirLight2);
+
+  // Controls
+  if (typeof THREE.OrbitControls !== 'undefined') {
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.maxDistance = 180;
+    controls.minDistance = 20;
+  }
+
+  // Load Binary STL
+  if (typeof THREE.STLLoader !== 'undefined') {
+    var loader = new THREE.STLLoader();
+    loader.load('momo_bot_final.stl', function (geometry) {
+      geometry.center();
+      geometry.computeVertexNormals();
+
+      var material = new THREE.MeshStandardMaterial({
+        color: currentHex,
+        roughness: 0.35,
+        metalness: 0.1,
+        side: THREE.DoubleSide
+      });
+
+      stlMesh = new THREE.Mesh(geometry, material);
+      stlMesh.rotation.x = -Math.PI / 2;
+      scene.add(stlMesh);
+      reset3DView();
+    }, undefined, function (error) {
+      console.warn('Could not load momo_bot_final.stl, loading fallback geometry:', error);
+      loadFallbackJSON();
+    });
+  } else {
+    loadFallbackJSON();
+  }
+
+  window.addEventListener('resize', onWindowResize);
+  animate();
+}
+
+function loadFallbackJSON() {
+  fetch('momo_model.json')
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      var group = new THREE.Group();
+      var mat = new THREE.MeshStandardMaterial({ color: currentHex, roughness: 0.35, side: THREE.DoubleSide });
+      ['obj_1', 'obj_4'].forEach(function(k) {
+        if (data[k]) {
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute('position', new THREE.Float32BufferAttribute(data[k].vertices, 3));
+          geo.setIndex(data[k].indices);
+          geo.computeVertexNormals();
+          var m = new THREE.Mesh(geo, mat);
+          m.rotation.x = -Math.PI / 2;
+          group.add(m);
+        }
+      });
+      stlMesh = group;
+      scene.add(stlMesh);
+      reset3DView();
+    });
+}
+
+function onWindowResize() {
+  var box = document.querySelector('.viewer-3d-box');
+  if (!box || !camera || !renderer) return;
+  camera.aspect = box.clientWidth / box.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(box.clientWidth, box.clientHeight);
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  if (controls) controls.update();
+  if (isAutoRotate && scene) {
+    scene.rotation.z += 0.008;
+  }
+  if (renderer && scene && camera) {
+    renderer.render(scene, camera);
+  }
+}
+
+function reset3DView() {
+  if (!camera) return;
+  camera.position.set(0, -65, 55);
+  camera.lookAt(0, 0, 0);
+  if (controls) {
+    controls.target.set(0, 0, 0);
+    controls.update();
+  }
+  if (scene) scene.rotation.set(0, 0, 0);
+}
+
+function toggleAutoRotate() {
+  isAutoRotate = !isAutoRotate;
+  var btn = document.getElementById('btnAutoRotate');
+  if (btn) btn.classList.toggle('active', isAutoRotate);
+}
+
+function toggleWireframe() {
+  if (!stlMesh) return;
+  var isWire = false;
+  if (stlMesh.isMesh && stlMesh.material) {
+    stlMesh.material.wireframe = !stlMesh.material.wireframe;
+    isWire = stlMesh.material.wireframe;
+  } else if (stlMesh.children) {
+    stlMesh.children.forEach(function (child) {
+      if (child.material) {
+        child.material.wireframe = !child.material.wireframe;
+        isWire = child.material.wireframe;
+      }
+    });
+  }
+  var btn = document.getElementById('btnWireframe');
+  if (btn) btn.classList.toggle('active', isWire);
+}
+
+function changeModelColor(hex) {
+  currentHex = parseInt(hex.replace('#', '0x'));
+  if (stlMesh) {
+    if (stlMesh.isMesh && stlMesh.material) {
+      stlMesh.material.color.setHex(currentHex);
+    } else if (stlMesh.children) {
+      stlMesh.children.forEach(function (child) {
+        if (child.material) child.material.color.setHex(currentHex);
+      });
+    }
+  }
+  document.querySelectorAll('.color-dot').forEach(function (dot) {
+    dot.classList.remove('active');
+    if (dot.getAttribute('onclick') && dot.getAttribute('onclick').includes(hex)) {
+      dot.classList.add('active');
+    }
+  });
+}
+
+// ============================================================
+// CODE VIEWER & COPY
+// ============================================================
+function loadSourceCode() {
+  var codeEl = document.getElementById('codeContent');
+  fetch('momo_bot.ino')
+    .then(function (res) { return res.text(); })
+    .then(function (code) {
+      if (codeEl) codeEl.textContent = code;
+    })
+    .catch(function () {
+      if (codeEl) codeEl.textContent = '// Code can be downloaded using the button above.';
+    });
+}
+
+function copySourceCode() {
+  var codeEl = document.getElementById('codeContent');
+  if (!codeEl) return;
+  navigator.clipboard.writeText(codeEl.textContent).then(function () {
+    var fb = document.getElementById('copyFeedback');
+    if (fb) {
+      fb.style.display = 'inline';
+      setTimeout(function () { fb.style.display = 'none'; }, 2500);
+    }
+  });
+}
+
+// Initialize on page load
+window.addEventListener('DOMContentLoaded', function () {
+  init3DViewer();
+  loadSourceCode();
+});
+</script>
+</body>
+</html>
