@@ -912,7 +912,6 @@ footer {
   <div class="action-bar">
     <button class="btn btn-primary" onclick="openEspSetupIp()" title="Opens the ESP8266 Setup Portal IP (192.168.4.1) directly">📶 Wi-Fi Setup (Open 192.168.4.1)</button>
     <button class="btn" onclick="openPortalModal()">💻 Offline Portal Simulator</button>
-    <a class="btn" href="setup.html" target="_blank">📄 View setup.html</a>
   </div>
 
   <div class="hero-links">
@@ -963,10 +962,6 @@ footer {
         <button class="viewer-btn active" id="btnResetView" onclick="reset3DView()">Center</button>
         <button class="viewer-btn" id="btnAutoRotate" onclick="toggleAutoRotate()">Auto Rotate</button>
         <button class="viewer-btn" id="btnWireframe" onclick="toggleWireframe()">Wireframe</button>
-        <label class="viewer-btn" style="cursor:pointer; margin:0" title="Load custom STL from computer">
-          Upload STL
-          <input type="file" id="stlFileInput" accept=".stl,.STL" style="display:none" onchange="loadUserSTL(this)">
-        </label>
       </div>
 
       <!-- FILAMENT COLOR SELECTOR: ONLY RED, WHITE, BLACK, AND DARK BLUE AS REQUESTED -->
@@ -1051,7 +1046,7 @@ footer {
   </div>
 
   <div class="note">
-    <p>💡 <strong>Note:</strong> Momo works only on 2.4 GHz Wi-Fi networks (ESP8266 does not support 5 GHz). You can also view the exact setup file at <a href="setup.html" target="_blank">setup.html</a>!</p>
+    <p>💡 <strong>Note:</strong> Momo works only on 2.4 GHz Wi-Fi networks (ESP8266 does not support 5 GHz).</p>
   </div>
 </section>
 
@@ -1256,7 +1251,7 @@ footer {
 </section>
 
 <footer>
-  Momo Desktop Robot &bull; 3D Print STL Enclosure &bull; Localhost Hub
+  Momo Desktop Robot
 </footer>
 
 </div>
