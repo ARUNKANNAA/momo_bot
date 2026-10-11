@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Momo - Desktop Robot User Manual & 3D Hub</title>
+<link rel="icon" type="image/jpeg" href="assets/arun_logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -780,13 +781,343 @@ tr:last-child td { border-bottom: none; }
 }
 .cred span:nth-child(odd) { color: #8e98a8; }
 
-footer {
+/* BRAND LOGO */
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--line);
+  flex-shrink: 0;
+  display: block;
+}
+
+/* KIT SECTION */
+.kit-card {
+  margin-top: 44px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: var(--card-shadow);
+}
+.kit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.kit-title-group h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.kit-subtitle {
+  color: var(--muted);
+  font-size: 14.5px;
+  margin-top: 4px;
+}
+.kit-price-box {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  background: var(--accent-bg);
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.kit-price-old {
+  font-size: 17px;
+  color: var(--muted);
+  text-decoration: line-through;
+  font-weight: 500;
+}
+.kit-price-new {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+.kit-body {
+  margin-top: 20px;
+}
+.kit-summary {
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 18px;
+}
+.kit-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--line);
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.kit-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 16px 0 20px;
+}
+.kit-gallery-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.kit-gallery-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+.kit-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.25s ease;
+}
+.kit-gallery-item:hover img {
+  transform: scale(1.05);
+}
+.kit-gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 70%, transparent 100%);
+  color: #ffffff;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 16px 8px 6px;
+  text-align: center;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+.kit-modal-container {
+  max-width: 760px;
+  width: 92%;
+  background: #0d1117;
+  border-radius: 18px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  position: relative;
+}
+.kit-steps-box {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+.kit-steps-box h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+.kit-steps-box ol {
+  padding-left: 20px;
+  margin: 0;
+  color: var(--ink);
+  font-size: 14.5px;
+}
+.kit-steps-box li {
+  margin: 6px 0;
+}
+.kit-notice {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.kit-notice.quality {
+  background: var(--success-bg);
+  border-left: 4px solid var(--success);
+  color: var(--success);
+}
+.kit-notice.policy {
+  background: var(--warn-bg);
+  border-left: 4px solid var(--warn);
+  color: var(--warn);
+}
+.kit-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.btn-whatsapp {
+  background: #25D366;
+  color: #ffffff !important;
+  border: 1px solid #20ba5a;
+  font-weight: 600;
+  padding: 11px 24px;
+  border-radius: 999px;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
+}
+.btn-whatsapp:hover {
+  background: #20ba5a;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+  transform: translateY(-1px);
+}
+.btn-support {
+  background: var(--card);
+  color: var(--ink) !important;
+  border: 1px solid var(--line);
+  font-weight: 500;
+  padding: 11px 20px;
+  border-radius: 999px;
+  font-size: 14.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-support:hover {
+  border-color: var(--accent);
+  color: var(--accent) !important;
+}
+
+/* SELLER DETAILS */
+.seller-box {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.seller-heading {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.seller-table {
+  width: 100%;
+  max-width: 440px;
+  border-collapse: collapse;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 14px;
+}
+.seller-table tr:not(:last-child) td {
+  border-bottom: 1px solid var(--line);
+}
+.seller-table td {
+  padding: 10px 14px;
+}
+.seller-table td.seller-label {
+  font-weight: 600;
+  color: var(--muted);
+  width: 110px;
+}
+.seller-table td.seller-value {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* SITE FOOTER */
+.site-footer {
   margin-top: 60px;
-  padding-top: 24px;
+  padding: 32px 0 24px;
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 14px;
-  text-align: center;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--line);
+  flex-shrink: 0;
+}
+.footer-title {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ink);
+}
+.footer-credit {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.footer-credit a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+.footer-credit a:hover {
+  text-decoration: underline;
+}
+.footer-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.footer-contact {
+  font-size: 13.5px;
+}
+.footer-contact a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+.footer-contact a:hover {
+  text-decoration: underline;
+}
+.footer-links {
+  font-size: 13px;
+  color: var(--muted);
+}
+.footer-links a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.footer-links a:hover {
+  color: var(--ink);
+  text-decoration: underline;
 }
 
 @media (max-width: 600px) {
@@ -794,6 +1125,12 @@ footer {
   .hero h1 { font-size: 28px; }
   h2 { font-size: 21px; }
   .top-nav .nav-pill { display: none; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+  .footer-meta { align-items: flex-start; }
+  .kit-price-box { width: 100%; justify-content: space-between; }
+  .kit-gallery { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .kit-actions { flex-direction: column; align-items: stretch; }
+  .btn-whatsapp, .btn-support { justify-content: center; }
 }
 </style>
 </head>
@@ -802,7 +1139,8 @@ footer {
 <!-- TOP NAV -->
 <header class="top-nav">
   <a href="#hero" class="brand">
-    <span>🤖 Momo Bot</span>
+    <img src="assets/arun_logo.jpg" alt="arun_hobbies" class="brand-logo">
+    <span>Momo Bot</span>
   </a>
   <div class="nav-links">
     <a href="#hero" class="nav-pill active">Robot Eyes</a>
@@ -938,6 +1276,8 @@ footer {
     <li><a href="#wiring">Wiring diagram & Pins</a></li>
     <li><a href="#code">Arduino Firmware Source</a></li>
     <li><a href="#specs">Technical specifications</a></li>
+    <li><a href="#files">Code and 3D files</a></li>
+    <li><a href="#kit">Momo Desktop Robot Kit</a></li>
   </ol>
 </nav>
 
@@ -1250,8 +1590,112 @@ footer {
   </ul>
 </section>
 
-<footer>
-  Momo Desktop Robot
+<!-- SECTION 13: MOMO DESKTOP ROBOT KIT -->
+<section id="kit" class="card-section kit-card">
+  <div class="kit-header">
+    <div class="kit-title-group">
+      <h2 class="card-title">13. Momo Desktop Robot Kit</h2>
+      <p class="kit-subtitle">Pre-programmed DIY hardware kit with custom 3D-printed enclosure</p>
+    </div>
+    <div class="kit-price-box">
+      <span class="kit-price-old">₹1,500</span>
+      <span class="kit-price-new">₹1,199</span>
+    </div>
+  </div>
+
+  <div class="kit-body">
+    <div class="kit-tagline">📦 You can get all components in one place</div>
+    <p class="kit-summary">
+      You can get all components in one place! Get the complete Momo kit for ₹1,199 with the 3D-printed case included, <strong>already programmed, no code upload is needed</strong>. Buyers solder it, fit it in the case, connect Wi-Fi, set their location and enjoy Momo!
+    </p>
+
+    <!-- REAL KIT PHOTOS GALLERY -->
+    <div class="kit-gallery">
+      <div class="kit-gallery-item" onclick="openKitImgModal('assets/kit_components.jpg', 'All components in one place: Wemos D1 mini, OLED, LiPo battery, 3D case, TP4056, touch sensor, switch & wires')" title="Click to enlarge">
+        <img src="assets/kit_components.jpg" alt="All components in one place: Wemos D1 mini, OLED, LiPo battery, 3D case, TP4056, touch sensor, switch & wires" loading="lazy">
+        <span class="kit-gallery-caption">All components in one place</span>
+      </div>
+      <div class="kit-gallery-item" onclick="openKitImgModal('assets/kit_unboxing.jpg', 'Unboxed kit contents inside package with white 3D enclosure')" title="Click to enlarge">
+        <img src="assets/kit_unboxing.jpg" alt="Kit unboxing showing white 3D enclosure, OLED box, battery, and electronics" loading="lazy">
+        <span class="kit-gallery-caption">Unboxed kit contents</span>
+      </div>
+      <div class="kit-gallery-item" onclick="openKitImgModal('assets/kit_enclosure.webp', 'Custom 3D-printed robot enclosure body and back lid')" title="Click to enlarge">
+        <img src="assets/kit_enclosure.webp" alt="Custom 3D-printed red enclosure and back cover" loading="lazy">
+        <span class="kit-gallery-caption">3D-printed enclosure</span>
+      </div>
+      <div class="kit-gallery-item" onclick="openKitImgModal('assets/kit_box.jpg', 'Official Arun Hobbies kit packaging box')" title="Click to enlarge">
+        <img src="assets/kit_box.jpg" alt="Official kit packaging box with Arun Hobbies branded logo" loading="lazy">
+        <span class="kit-gallery-caption">Packaging box</span>
+      </div>
+    </div>
+
+    <div class="kit-steps-box">
+      <h4>How it works:</h4>
+      <ol>
+        <li>Solder the hardware components according to the wiring diagram.</li>
+        <li>Fit the electronics neatly into the included 3D-printed case.</li>
+        <li>Connect to Wi-Fi via Momo's built-in hotspot portal.</li>
+        <li>Set your location coordinates and enjoy your Momo companion.</li>
+      </ol>
+    </div>
+
+    <div class="kit-notice quality">
+      ✅ <strong>Quality assurance:</strong> All components are checked and verified by our team to confirm they are working.
+    </div>
+
+    <div class="kit-notice policy">
+      ⚠️ <strong>Policy:</strong> No returns and no refunds on the kit.
+    </div>
+
+    <div class="kit-actions">
+      <a href="https://wa.me/918072522040?text=Hi%2C%20I%20would%20like%20to%20order%20the%20Momo%20Desktop%20Robot%20Kit%20(%E2%82%B91%2C199)." target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+        💬 Order via WhatsApp (+91 8072522040)
+      </a>
+      <a href="mailto:contact.arunhobbies@gmail.com" class="btn-support">
+        ✉️ Support: contact.arunhobbies@gmail.com
+      </a>
+    </div>
+
+    <!-- SELLER DETAILS -->
+    <div class="seller-box">
+      <h4 class="seller-heading">Seller details</h4>
+      <table class="seller-table">
+        <tbody>
+          <tr>
+            <td class="seller-label">Seller</td>
+            <td class="seller-value">Arunkannaa S</td>
+          </tr>
+          <tr>
+            <td class="seller-label">Based in</td>
+            <td class="seller-value">Chennai</td>
+          </tr>
+          <tr>
+            <td class="seller-label">Background</td>
+            <td class="seller-value">B.E. Robotics and Automation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/arun_logo.jpg" alt="arun_hobbies logo" class="footer-logo">
+      <div class="footer-text">
+        <div class="footer-title">Momo Desktop Robot</div>
+        <div class="footer-credit">Open sourced by <a href="https://www.instagram.com/arun_hobbies/" target="_blank" rel="noopener noreferrer">arun_hobbies</a></div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <div class="footer-contact">Support: <a href="mailto:contact.arunhobbies@gmail.com">contact.arunhobbies@gmail.com</a></div>
+      <div class="footer-links">
+        <a href="https://github.com/ARUNKANNAA/momo_bot" target="_blank" rel="noopener noreferrer">GitHub</a> &bull;
+        <a href="https://www.instagram.com/arun_hobbies/" target="_blank" rel="noopener noreferrer">Instagram (@arun_hobbies)</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
 </div>
@@ -1261,6 +1705,15 @@ footer {
   <div class="portal-iframe-container">
     <button class="portal-modal-close" onclick="closePortalModal()" title="Close Portal">✕</button>
     <iframe src="setup.html" style="width:100%; height:100%; border:none;" title="Momo Setup Portal"></iframe>
+  </div>
+</div>
+
+<!-- KIT IMAGE LIGHTBOX MODAL -->
+<div class="modal-overlay" id="kitImgModal" onclick="closeKitImgModal()">
+  <div class="kit-modal-container" onclick="event.stopPropagation()">
+    <button class="portal-modal-close" onclick="closeKitImgModal()" title="Close Viewer">✕</button>
+    <img id="kitModalImg" src="" alt="" style="width:100%; height:auto; max-height:80vh; object-fit:contain; border-radius:12px; display:block; margin:0 auto;">
+    <div id="kitModalCaption" style="color:#ffffff; text-align:center; margin-top:12px; font-size:14.5px; font-weight:500;"></div>
   </div>
 </div>
 
@@ -1528,6 +1981,23 @@ function openPortalModal() {
 }
 function closePortalModal() {
   document.getElementById('portalModal').classList.remove('active');
+}
+
+// KIT IMAGE LIGHTBOX
+function openKitImgModal(src, alt) {
+  var modal = document.getElementById('kitImgModal');
+  var img = document.getElementById('kitModalImg');
+  var caption = document.getElementById('kitModalCaption');
+  if (modal && img) {
+    img.src = src;
+    img.alt = alt || '';
+    if (caption) caption.textContent = alt || '';
+    modal.classList.add('active');
+  }
+}
+function closeKitImgModal() {
+  var modal = document.getElementById('kitImgModal');
+  if (modal) modal.classList.remove('active');
 }
 
 // ============================================================
